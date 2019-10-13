@@ -13,6 +13,7 @@ namespace AttendanceLite.Domain.Entities
 
         private byte[] _saltKey;
 
+        public User User { get; set; }
         public void SetKey(User user, byte[] saltKey)
         {
             if(saltKey.Length > 0 && user.Id == UserId)

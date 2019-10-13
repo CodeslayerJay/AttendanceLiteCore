@@ -14,10 +14,12 @@ namespace AttendanceLite.Domain.Entities
         public string LastName { get; set; }
         public int LastFourSSN { get; set; }
 
-        public UserRole Role { get; set; }
         public UserCredential Credentials { get; set; }
 
+        public ICollection<UserRole> UserRoles { get; set; }
+
         private ICollection<TimeLog> _timeLogs;
+        
 
         public void AddLog(TimeLog log)
         {
