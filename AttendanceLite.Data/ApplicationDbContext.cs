@@ -1,5 +1,6 @@
 ﻿using AttendanceLite.Data.DbConfigurations;
 using AttendanceLite.Domain.Entities;
+using AttendanceLite.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace AttendanceLite.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext, IAppDbContext
     {
 
         public DbSet<User> Users { get; set; }

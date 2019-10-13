@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AttendanceLite.Domain.Repositories
+namespace AttendanceLite.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
