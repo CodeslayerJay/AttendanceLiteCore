@@ -8,4 +8,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+  </ItemGroup>
+
 </Project>

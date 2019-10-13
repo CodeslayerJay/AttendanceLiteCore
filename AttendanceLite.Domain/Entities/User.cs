@@ -8,7 +8,7 @@ namespace AttendanceLite.Domain.Entities
     {
         public User()
         {
-            TimeLogs = new HashSet<TimeLog>();
+            _timeLogs = new HashSet<TimeLog>();
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -17,6 +17,20 @@ namespace AttendanceLite.Domain.Entities
         public UserRole Role { get; set; }
         public UserCredential Credentials { get; set; }
 
-        public ICollection<TimeLog> TimeLogs { get; set; }
+        private ICollection<TimeLog> _timeLogs;
+
+        public void AddLog(TimeLog log)
+        {
+            if(log != null && log.UserId == Id)
+            {
+                _timeLogs.Add(log);
+            }
+        }
+
+        public IEnumerable<TimeLog> GetTimeLogs()
+        {
+            return _timeLogs;
+        }
+
     }
 }
