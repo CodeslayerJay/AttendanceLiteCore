@@ -7,6 +7,7 @@ namespace AttendanceLite.Domain.Entities
 {
     public class TimeLog : EntityBase
     {
+        public int UserId { get; set; }
         public LogType Type { get; set; } = LogType.SelfStamped;
         public bool IsCheckedIn { get; set; }
     }

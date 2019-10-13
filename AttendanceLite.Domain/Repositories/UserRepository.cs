@@ -1,4 +1,6 @@
 ﻿using AttendanceLite.Domain.Entities;
+using AttendanceLite.Domain.Filters;
+using AttendanceLite.Domain.Interfaces;
 using AttendanceLite.Domain.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
@@ -27,9 +29,12 @@ namespace AttendanceLite.Domain.Repositories
             return _users.Where(x => x.Id == id).SingleOrDefault();
         }
 
-        public IEnumerable<User> GetAll(int skip = 1, int amount = 100)
+        public IEnumerable<User> GetAll(IFilter filter = null)
         {
-            return _users.Where(x => x.Id > 0).Skip(skip).Take(amount).ToList();
+            if (filter == null)
+                filter = new QueryFilter();
+
+            return _users.Where(x => x.Id > 0).Skip(filter.Skip).Take(filter.Size).ToList();
         }
 
         public void Remove(int id)

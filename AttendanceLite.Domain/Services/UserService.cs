@@ -64,9 +64,5 @@ namespace AttendanceLite.Domain.Services
 
             return PasswordService.VerifyPasswords(user.Credentials, password);
         }
-
-
-
-
     }
 }
