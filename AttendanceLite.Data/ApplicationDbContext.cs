@@ -17,20 +17,23 @@ namespace AttendanceLite.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<TimeLog> TimeLogs { get; set; }
 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {   }
 
-        private readonly string _connString = "Server=(localdb)\\MSSQLLocalDB;Database=AttendanceLiteDb_Core;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        public ApplicationDbContext()
-        { }
+        //private readonly string _connString = "Server=(localdb)\\MSSQLLocalDB;Database=AttendanceLiteDb_Core;Trusted_Connection=True;MultipleActiveResultSets=true";
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
+        //public ApplicationDbContext()
+        //{ }
 
-                optionsBuilder.UseSqlServer(_connString);
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+
+        //        optionsBuilder.UseSqlServer(_connString);
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

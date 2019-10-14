@@ -1,5 +1,6 @@
 ﻿using AttendanceLite.Domain.Entities;
 using AttendanceLite.Domain.Exceptions;
+using AttendanceLite.Domain.Interfaces;
 using AttendanceLite.Domain.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
@@ -9,32 +10,36 @@ namespace AttendanceLite.Services
 {
     public class TimeLogService
     {
-        private readonly IUserRepository _userRepo;
-        private readonly ITimeLogRepository _timeLogRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TimeLogService(IUserRepository userRepository, ITimeLogRepository timeLogRepository)
+        public TimeLogService(IUnitOfWork unitOfWork)
         {
-            _userRepo = userRepository;
-            _timeLogRepo = timeLogRepository;
+            _unitOfWork = unitOfWork;
         }
         public void AddLog(TimeLog timeLog)
         {
             if (timeLog == null)
                 throw new TimeLogNullException(nameof(AddLog));
 
-            var user = _userRepo.GetBy(timeLog.UserId);
+            var user = _unitOfWork.Users.GetBy(timeLog.UserId);
 
             if (user == null)
                 throw new UserNullException(nameof(AddLog));
 
-            _timeLogRepo.Add(timeLog);
+            _unitOfWork.TimeLogs.Add(timeLog);
             user.AddLog(timeLog);
-
+            _unitOfWork.SaveChanges();
         }
 
         public void DeleteLog(int id)
         {
-            _timeLogRepo.Remove(id);
+            var timeLog = _unitOfWork.TimeLogs.GetBy(id);
+
+            if(timeLog != null)
+            {
+                _unitOfWork.TimeLogs.Remove(id);
+            }
+
         }
     }
 }

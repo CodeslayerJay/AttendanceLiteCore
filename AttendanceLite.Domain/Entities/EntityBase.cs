@@ -5,9 +5,10 @@ using System.Text;
 
 namespace AttendanceLite.Domain.Entities
 {
-    public abstract class EntityBase : IEntity
+    public abstract class EntityBase : IEntity, ITimeStamp
     {
         public int Id { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
     }

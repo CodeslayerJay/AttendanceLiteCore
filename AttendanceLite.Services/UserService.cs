@@ -4,16 +4,17 @@ using AttendanceLite.Domain.Interfaces.Repositories;
 using System;
 using AttendanceLite.Domain.Specifications;
 using AttendanceLite.Domain.Interfaces.Services;
+using AttendanceLite.Domain.Interfaces;
 
 namespace AttendanceLite.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUnitOfWork unitOfWork)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -26,14 +27,15 @@ namespace AttendanceLite.Services
             if (!userSpec.IsSatisfiedBy(user))
                 throw new Exception("User did not pass validation. One or more arguments is null.");
 
-            _userRepository.Add(user);
+            _unitOfWork.Users.Add(user);
+            _unitOfWork.SaveChanges();
 
         }
 
         public void SaveUserCredentials(UserCredential userCred)
         {
 
-            var user = _userRepository.GetBy(userCred.UserId);
+            var user = _unitOfWork.Users.GetBy(userCred.UserId);
 
             if (user == null)
                 throw new UserNullException($"User not found with id {userCred.UserId}");
@@ -58,11 +60,12 @@ namespace AttendanceLite.Services
             if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
                 return false;
 
-            var user = _userRepository.GetBy(username);
+            var user = _unitOfWork.Users.GetBy(username);
             if (user == null)
                 return false;
 
             return PasswordService.VerifyPasswords(user.Credentials, password);
         }
+
     }
 }

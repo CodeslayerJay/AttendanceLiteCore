@@ -2,6 +2,7 @@
 using AttendanceLite.Domain.Filters;
 using AttendanceLite.Domain.Interfaces;
 using AttendanceLite.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,34 +10,13 @@ using System.Text;
 
 namespace AttendanceLite.Data.Repositories
 {
-    public class TimeLogRepository : ITimeLogRepository
+    public class TimeLogRepository : RepositoryBase<TimeLog>, ITimeLogRepository
     {
-        private List<TimeLog> _timeLogs = new List<TimeLog>();
+        private readonly DbSet<TimeLog> _timeLogs;
 
-        public void Add(TimeLog timeLog)
+        public TimeLogRepository(ApplicationDbContext context) : base(context)
         {
-            if (timeLog != null)
-                _timeLogs.Add(timeLog);
-        }
-
-        public TimeLog GetBy(int id)
-        {
-            return _timeLogs.Where(x => x.Id == id).SingleOrDefault();
-        }
-
-        public IEnumerable<TimeLog> GetAll(IFilter filter = null)
-        {
-            if (filter == null)
-                filter = new QueryFilter();
-
-            return _timeLogs.Where(x => x.Id > 0).Skip(filter.Skip).Take(filter.Size).ToList();
-        }
-
-        public void Remove(int id)
-        {
-            var timeLog = GetBy(id);
-            if (timeLog != null)
-                _timeLogs.Remove(timeLog);
+            _timeLogs = context.TimeLogs;
         }
     }
 }

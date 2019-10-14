@@ -1,4 +1,5 @@
 ﻿using AttendanceLite.Domain.Enums;
+using AttendanceLite.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +11,7 @@ namespace AttendanceLite.Domain.Entities
         public int UserId { get; set; }
         public LogType Type { get; set; } = LogType.SelfStamped;
         public bool IsCheckedIn { get; set; }
-
+        
         public User User { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using AttendanceLite.Domain.Filters;
 using AttendanceLite.Domain.Interfaces;
 using AttendanceLite.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,40 +10,21 @@ using System.Text;
 
 namespace AttendanceLite.Data.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : RepositoryBase<User>, IUserRepository
     {
-        private List<User> _users = new List<User>();
+        private readonly DbSet<User> _users;
 
-        public void Add(User user)
+        public UserRepository(ApplicationDbContext context) : base(context)
         {
-            if (user != null)
-                _users.Add(user);
+            _users = context.Users;
         }
 
+        
         public User GetBy(string username)
         {
             var users = _users.Where(x => x.Id > 0 && x.Credentials != null);
             return users.Where(x => x.Credentials.Username == username).SingleOrDefault();
         }
-        public User GetBy(int id)
-        {
-            return _users.Where(x => x.Id == id).SingleOrDefault();
-        }
-
-        public IEnumerable<User> GetAll(IFilter filter = null)
-        {
-            if (filter == null)
-                filter = new QueryFilter();
-
-            return _users.Where(x => x.Id > 0).Skip(filter.Skip).Take(filter.Size).ToList();
-        }
-
-        public void Remove(int id)
-        {
-            var user = GetBy(id);
-            if (user != null)
-                _users.Remove(user);
-        }
-
+        
     }
 }

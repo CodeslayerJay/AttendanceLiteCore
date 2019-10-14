@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using AttendanceLite.Domain.Interfaces;
+using System.Collections.Generic;
 
 namespace AttendanceLite.Domain.Entities
 {
-    public class Role
+    public class Role : IEntity
     {
 
         public Role()
@@ -11,6 +12,7 @@ namespace AttendanceLite.Domain.Entities
         }
 
         public int Id { get; set; }
+
         public string Name { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }

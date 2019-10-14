@@ -1,4 +1,5 @@
 ﻿using AttendanceLite.Domain.Interfaces;
+using AttendanceLite.Domain.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,13 +10,18 @@ namespace AttendanceLite.Data
     public class UnitOfWork : IUnitOfWork
     {
         private readonly IAppDbContext _dbContext;
+        public IUserRepository Users { get; }
+        public ITimeLogRepository TimeLogs { get;  }
 
-        public UnitOfWork(IAppDbContext dbContext)
+        public UnitOfWork(IAppDbContext dbContext, 
+            IUserRepository userRepository, ITimeLogRepository timeLogRepository)
         {
             _dbContext = dbContext;
+            Users = userRepository;
+            TimeLogs = timeLogRepository;
         }
 
-        public int SaveChange()
+        public int SaveChanges()
         {
             return _dbContext.SaveChanges();
         }
